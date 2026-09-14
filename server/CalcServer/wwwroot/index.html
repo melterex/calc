@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calc</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Калькулятор</h1>
+        <div class="calc-box">
+            <input type="text"
+                   id="expression"
+                   placeholder="Введите выражение"
+                   autocomplete="off" />
+            <button id="calc-btn">Посчитать</button>
+        </div>
+        <div id="result" class="result"></div>
+        <section class="history-section">
+            <h2>История</h2>
+            <ul id="history-list" class="history"></ul>
+        </section>
+    </div>
+
+    <script src="js/calculator.js"></script>
+</body>
+</html>
