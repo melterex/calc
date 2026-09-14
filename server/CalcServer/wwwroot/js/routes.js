@@ -15,7 +15,7 @@ async function getHistory() {
     }
 }
 
-async function PostCalculate(expr) {
+async function postCalculate(expr) {
     try {
         const response = await fetch('/api/calculator/calculate', {
             method: 'POST',

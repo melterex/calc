@@ -4,7 +4,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const resultDiv = document.getElementById('result');
     const historyList = document.getElementById('history-list');
 
-    let mockHistory = [
+    let history = [
     ];
 
     async function calculate() {
@@ -16,19 +16,7 @@ document.addEventListener('DOMContentLoaded', () => {
         resultDiv.className = 'result';
         resultDiv.textContent = '';
 
-        await new Promise(r => setTimeout(r, 300));
-
-        let data;
-        if (expression === '2 + + 3' || !expression.match(/^[\d\s+\-*/().]+$/)) {
-            data = { error: 'Ошибка в выражении' };
-        } else {
-            try {
-                const result = Function('"use strict"; return (' + expression + ')')();
-                data = { result: result };
-            } catch {
-                data = { error: 'Ошибка в выражении' };
-            }
-        }
+        let data = await postCalculate(expression);
 
         if (data.error) {
             resultDiv.className = 'result error';
@@ -36,22 +24,23 @@ document.addEventListener('DOMContentLoaded', () => {
         } else {
             resultDiv.className = 'result success';
             resultDiv.textContent = '= ' + data.result;
-
-            mockHistory.unshift({
-                expression: expression,
-                result: data.result
-            });
-            renderHistory();
+            await renderHistory();
         }
 
         btn.disabled = false;
         btn.textContent = 'Вычислить';
     }
 
-    function renderHistory() {
+    async function renderHistory() {
         historyList.innerHTML = '';
 
-        mockHistory.forEach(item => {
+        history = await getHistory();
+
+        if (history.error){
+            return;
+        }
+
+        history.slice().reverse().forEach(item => {
             const li = document.createElement('li');
 
             const exprSpan = document.createElement('span');

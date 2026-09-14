@@ -45,6 +45,9 @@ app.MapGet("/api/calculator/history/{id:int}", (int id, IHistory history) =>
     return entry is not null ? Results.Ok(entry) : Results.NotFound($"History item with ID {id} not found.");
 });
 
+app.UseDefaultFiles();
+app.UseStaticFiles();
+
 app.Run();
 
 
