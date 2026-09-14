@@ -1,18 +1,29 @@
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // TODO: remove Fake here when our classes are implemented
 
 builder.Services.AddSingleton<ICalculator, FakeCalculator>();
-builder.Services.AddSingleton<IHistory, FakeHistory>();
+builder.Services.AddScoped<IHistory, History>();
 
 builder.Services.AddCors(options =>
 {
     options.AddDefaultPolicy(policy => policy.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader());
 });
 
+builder.Services.AddDbContext<AppDbContext>(options =>
+    options.UseSqlite("Data Source=calculator.db"));
+
 var app = builder.Build();
+
+using (var scope = app.Services.CreateScope())
+{
+    var db = scope.ServiceProvider.GetRequiredService<AppDbContext>();
+    db.Database.EnsureCreated();
+}
+
 app.UseCors();
 
 // 1. POST: Calculate an expression
