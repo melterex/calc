@@ -5,7 +5,7 @@ var builder = WebApplication.CreateBuilder(args);
 
 // TODO: remove Fake here when our classes are implemented
 
-builder.Services.AddSingleton<ICalculator, FakeCalculator>();
+builder.Services.AddSingleton<ICalculator, Calculator>();
 builder.Services.AddScoped<IHistory, History>();
 
 builder.Services.AddCors(options =>
